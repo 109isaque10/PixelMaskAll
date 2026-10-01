@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.kinginu.pixelmask'
+    namespace 'com.kinginu.pixelmaskall'
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.kinginu.pixelmask"
+        applicationId "com.kinginu.pixelmaskall"
         minSdk 26
         targetSdk 36
         // CI passes -PversionCode / -PversionName from the release workflow.
