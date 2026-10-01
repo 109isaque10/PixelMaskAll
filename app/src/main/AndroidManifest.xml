@@ -3,9 +3,7 @@
     <!-- Used by the in-app updater to fetch update_info.json from raw.githubusercontent.com -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <queries>
-        <package android:name="com.google.android.apps.photos" />
-    </queries>
+
 
     <application
         android:label="@string/app_name"
