@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace 'com.kinginu.pixelmaskall'
+    namespace 'com.kinginu.pixelmask'
     compileSdk 36
 
     defaultConfig {
