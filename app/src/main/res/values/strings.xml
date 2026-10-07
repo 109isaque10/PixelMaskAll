@@ -24,6 +24,7 @@
     <string name="update_just_now">just now</string>
     <string name="android_version">Android Version</string>
     <string name="device_model">Device Model</string>
+    <string name="selected_spoof_model">Selected Spoof Model</string>
     <string name="app_version">App Version</string>
     <string name="info_and_links">Info &amp; Links</string>
     <string name="about_app">About %1$s</string>

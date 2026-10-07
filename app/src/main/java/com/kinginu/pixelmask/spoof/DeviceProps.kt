@@ -198,8 +198,20 @@ object DeviceProps {
     fun getDeviceProps(deviceName: String?): DeviceEntry? =
         allDevices.find { it.deviceName == deviceName }
 
+    private fun normalizeDeviceName(deviceName: String?): String? =
+        deviceName
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() }
+            ?.lowercase()
+            ?.removePrefix("google ")
+
+    fun resolveDeviceEntry(deviceName: String?): DeviceEntry? {
+        val normalized = normalizeDeviceName(deviceName) ?: return null
+        return allDevices.find { normalizeDeviceName(it.deviceName) == normalized }
+    }
+
     fun getFeaturesUpToFromDeviceName(deviceName: String?): Set<String> {
-        val entry = getDeviceProps(deviceName) ?: return emptySet()
+        val entry = resolveDeviceEntry(deviceName) ?: return emptySet()
         return FeatureLevel.entries
             .take(entry.featureLevel.ordinal + 1)
             .flatMap { it.flags }

@@ -76,7 +76,7 @@ fun SettingScreen(onSettingChanged: () -> Unit) {
         // We don't write the corrected value back here — the hook entry has the same
         // fallback, and the next user pick will overwrite the stale pref anyway.
         val saved = pref.getString(Constants.PREF_DEVICE_TO_SPOOF, null)
-        val validated = saved?.takeIf { name -> DeviceProps.allDevices.any { it.deviceName == name } }
+        val validated = DeviceProps.resolveDeviceEntry(saved)?.deviceName
             ?: DeviceProps.defaultDeviceName
         mutableStateOf(validated)
     }
