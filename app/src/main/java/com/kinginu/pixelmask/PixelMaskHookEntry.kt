@@ -33,15 +33,23 @@ class PixelMaskHookEntry : IYukiHookXposedInit {
                 .set(true)
         }
 
-        // Google Photos: device-prop spoof + hasSystemFeature override
-        loadApp{
+        // Selected scope apps: device-prop spoof (all), Photos feature overrides (Photos only).
+        loadApp {
+            // Never spoof the module app itself; this keeps in-app diagnostics reporting the
+            // real device and avoids stale self-spoofing confusion after changing target.
+            if (packageName == BuildConfig.APPLICATION_ID) return@loadApp
+
             val sharedPrefs = prefs(SHARED_PREF_FILE_NAME)
 
             if (!sharedPrefs.getBoolean(PREF_MODULE_ENABLED, true)) return@loadApp
 
             val verbose = sharedPrefs.getBoolean(PREF_ENABLE_VERBOSE_LOGS, false)
             val savedName = sharedPrefs.getString(PREF_DEVICE_TO_SPOOF, DeviceProps.defaultDeviceName)
-            val device = DeviceProps.getDeviceProps(savedName)
+            val resolvedName = savedName
+                ?.trim()
+                ?.takeIf { it.isNotEmpty() }
+            val device = DeviceProps.getDeviceProps(resolvedName)
+                ?: DeviceProps.allDevices.find { it.deviceName.equals(resolvedName, ignoreCase = true) }
                 ?: DeviceProps.getDeviceProps(DeviceProps.defaultDeviceName)
                 ?: return@loadApp
 
@@ -67,7 +75,9 @@ class PixelMaskHookEntry : IYukiHookXposedInit {
                 }
             }
 
-            // Hook hasSystemFeature(String) and hasSystemFeature(String, int).
+            if (!packageName.startsWith("com.google.")) return@loadApp
+
+            // Hook hasSystemFeature(String) and hasSystemFeature(String, int) for Google apps.
             val pmClass = "android.app.ApplicationPackageManager".toClass(appClassLoader)
 
             fun hookHasSystemFeature(vararg paramTypes: KClass<*>) {
