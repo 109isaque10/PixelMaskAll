@@ -5,6 +5,7 @@ import com.kinginu.pixelmask.Constants.PREF_ENABLE_VERBOSE_LOGS
 import com.kinginu.pixelmask.Constants.PREF_MODULE_ENABLED
 import com.kinginu.pixelmask.Constants.SHARED_PREF_FILE_NAME
 import com.kinginu.pixelmask.spoof.DeviceProps
+import com.kinginu.pixelmask.utils.ModuleStatus
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
@@ -27,7 +28,7 @@ class PixelMaskHookEntry : IYukiHookXposedInit {
 
         // Self app: flip ModuleStatus.hookedFlag so Home renders "Module Active".
         loadApp(name = BuildConfig.APPLICATION_ID) {
-            "${BuildConfig.APPLICATION_ID}.utils.ModuleStatus".toClass()
+            ModuleStatus::class.java.name.toClass()
                 .resolve()
                 .firstField { name = "hookedFlag" }
                 .set(true)
