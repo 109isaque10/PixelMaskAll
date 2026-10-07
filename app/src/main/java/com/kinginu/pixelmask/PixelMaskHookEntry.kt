@@ -50,7 +50,6 @@ class PixelMaskHookEntry : IYukiHookXposedInit {
                 ?.trim()
                 ?.takeIf { it.isNotEmpty() }
             val device = DeviceProps.getDeviceProps(resolvedName)
-                ?: DeviceProps.getDeviceProps(resolvedName?.lowercase())
                 ?: DeviceProps.allDevices.find { it.deviceName.equals(resolvedName, ignoreCase = true) }
                 ?: DeviceProps.getDeviceProps(DeviceProps.defaultDeviceName)
                 ?: return@loadApp
