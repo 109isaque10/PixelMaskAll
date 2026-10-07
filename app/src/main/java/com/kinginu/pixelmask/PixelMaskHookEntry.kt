@@ -46,11 +46,7 @@ class PixelMaskHookEntry : IYukiHookXposedInit {
 
             val verbose = sharedPrefs.getBoolean(PREF_ENABLE_VERBOSE_LOGS, false)
             val savedName = sharedPrefs.getString(PREF_DEVICE_TO_SPOOF, DeviceProps.defaultDeviceName)
-            val resolvedName = savedName
-                ?.trim()
-                ?.takeIf { it.isNotEmpty() }
-            val device = DeviceProps.getDeviceProps(resolvedName)
-                ?: DeviceProps.allDevices.find { it.deviceName.equals(resolvedName, ignoreCase = true) }
+            val device = DeviceProps.resolveDeviceEntry(savedName)
                 ?: DeviceProps.getDeviceProps(DeviceProps.defaultDeviceName)
                 ?: return@loadApp
 
