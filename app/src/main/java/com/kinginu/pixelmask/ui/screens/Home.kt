@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kinginu.pixelmask.Constants
 import com.kinginu.pixelmask.R
+import com.kinginu.pixelmask.spoof.DeviceProps
 import com.kinginu.pixelmask.ui.components.InfoCard
 import com.kinginu.pixelmask.ui.components.InfoCardItemData
 import com.kinginu.pixelmask.ui.components.LinkCard
@@ -65,6 +66,22 @@ fun HomeScreen(
         prefs.registerOnSharedPreferenceChangeListener(listener)
         awaitDispose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
     }
+    val initialSpoofModel = remember(prefs) {
+        DeviceProps.resolveDeviceEntry(
+            prefs.getString(Constants.PREF_DEVICE_TO_SPOOF, DeviceProps.defaultDeviceName)
+        )?.deviceName ?: DeviceProps.defaultDeviceName
+    }
+    val selectedSpoofModel by produceState(initialValue = initialSpoofModel, prefs) {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == Constants.PREF_DEVICE_TO_SPOOF) {
+                value = DeviceProps.resolveDeviceEntry(
+                    prefs.getString(Constants.PREF_DEVICE_TO_SPOOF, DeviceProps.defaultDeviceName)
+                )?.deviceName ?: DeviceProps.defaultDeviceName
+            }
+        }
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+        awaitDispose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
     val moduleState = when {
         !ModuleStatus.isModuleActive() -> ModuleState.NOT_LOADED
         !moduleEnabled -> ModuleState.DISABLED
@@ -91,6 +108,7 @@ fun HomeScreen(
             items = listOf(
                 InfoCardItemData(stringResource(R.string.android_version), Build.VERSION.RELEASE),
                 InfoCardItemData(stringResource(R.string.device_model), Build.MODEL),
+                InfoCardItemData(stringResource(R.string.selected_spoof_model), selectedSpoofModel),
                 InfoCardItemData(stringResource(R.string.app_version), appVersion),
             )
         )
