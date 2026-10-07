@@ -3,7 +3,6 @@ package com.kinginu.pixelmask
 import com.kinginu.pixelmask.Constants.PREF_DEVICE_TO_SPOOF
 import com.kinginu.pixelmask.Constants.PREF_ENABLE_VERBOSE_LOGS
 import com.kinginu.pixelmask.Constants.PREF_MODULE_ENABLED
-import com.kinginu.pixelmask.Constants.PACKAGE_NAME_GOOGLE_PHOTOS
 import com.kinginu.pixelmask.Constants.SHARED_PREF_FILE_NAME
 import com.kinginu.pixelmask.spoof.DeviceProps
 import com.highcapable.kavaref.KavaRef.Companion.resolve
@@ -76,9 +75,9 @@ class PixelMaskHookEntry : IYukiHookXposedInit {
                 }
             }
 
-            if (packageName != PACKAGE_NAME_GOOGLE_PHOTOS) return@loadApp
+            if (!packageName.startsWith("com.google.")) return@loadApp
 
-            // Hook hasSystemFeature(String) and hasSystemFeature(String, int) for Photos.
+            // Hook hasSystemFeature(String) and hasSystemFeature(String, int) for Google apps.
             val pmClass = "android.app.ApplicationPackageManager".toClass(appClassLoader)
 
             fun hookHasSystemFeature(vararg paramTypes: KClass<*>) {
