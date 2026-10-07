@@ -19,12 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kinginu.pixelmask.Constants
 import com.kinginu.pixelmask.R
@@ -39,15 +37,12 @@ import com.kinginu.pixelmask.ui.components.SettingSwitchItem
 import com.kinginu.pixelmask.ui.components.SoftDivider
 import com.kinginu.pixelmask.utils.ModuleStatus
 import com.kinginu.pixelmask.utils.Utils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(onSettingChanged: () -> Unit) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
 
     val pref = remember {
         context.getSharedPreferences(Constants.SHARED_PREF_FILE_NAME, Context.MODE_PRIVATE)
@@ -63,16 +58,12 @@ fun SettingScreen(onSettingChanged: () -> Unit) {
     }
 
     fun saveBoolean(key: String, value: Boolean) {
-        coroutineScope.launch(Dispatchers.IO) {
-            pref.edit().putBoolean(key, value).commit()
-        }
+        pref.edit().putBoolean(key, value).commit()
         notifyChangedIfActive()
     }
 
     fun saveString(key: String, value: String) {
-        coroutineScope.launch(Dispatchers.IO) {
-            pref.edit().putString(key, value).commit()
-        }
+        pref.edit().putString(key, value).commit()
         notifyChangedIfActive()
     }
 
