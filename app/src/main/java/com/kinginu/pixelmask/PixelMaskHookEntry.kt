@@ -15,7 +15,7 @@ import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 import de.robv.android.xposed.XposedHelpers
 import kotlin.reflect.KClass
 
-@InjectYukiHookWithXposed
+@InjectYukiHookWithXposed(modulePackageName = "com.kinginu.pixelmaskall")
 class PixelMaskHookEntry : IYukiHookXposedInit {
 
     override fun onInit() = YukiHookAPI.configs {
