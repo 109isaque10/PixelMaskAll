@@ -66,6 +66,7 @@ import com.kinginu.pixelmask.Constants.UPDATE_INFO_URL
 import com.kinginu.pixelmask.ui.components.UpdateCheckState
 import com.kinginu.pixelmask.ui.screens.HomeScreen
 import com.kinginu.pixelmask.ui.screens.SettingScreen
+import com.kinginu.pixelmask.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -101,6 +102,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        Utils.makeWorldReadable(this)
 
         setContent {
             val context = LocalContext.current

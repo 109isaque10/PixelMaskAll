@@ -12,8 +12,26 @@ import com.kinginu.pixelmask.BuildConfig
 import com.kinginu.pixelmask.Constants
 import com.kinginu.pixelmask.R
 import com.kinginu.pixelmask.spoof.DeviceProps
+import java.io.File
 
 object Utils {
+
+    fun makeWorldReadable(context: Context) {
+        runCatching {
+            val dataDir = File(context.applicationInfo.dataDir)
+            dataDir.setReadable(true, false)
+            dataDir.setExecutable(true, false)
+            val prefsDir = File(dataDir, "shared_prefs")
+            if (prefsDir.exists()) {
+                prefsDir.setReadable(true, false)
+                prefsDir.setExecutable(true, false)
+            }
+            val file = File(prefsDir, "${Constants.SHARED_PREF_FILE_NAME}.xml")
+            if (file.exists()) {
+                file.setReadable(true, false)
+            }
+        }
+    }
 
     // Open the system "App info" screen for the given package. We can't programmatically
     // force-stop another app from a non-system process — every su / am force-stop dance from

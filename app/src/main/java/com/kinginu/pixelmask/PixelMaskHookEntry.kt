@@ -22,6 +22,7 @@ class PixelMaskHookEntry : IYukiHookXposedInit {
         debugLog {
             tag = "PixelMask"
         }
+        isEnableHookSharedPreferences = true
     }
 
     override fun onHook() = YukiHookAPI.encase {

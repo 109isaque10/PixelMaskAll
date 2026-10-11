@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +51,10 @@ fun SettingScreen(onSettingChanged: () -> Unit) {
 
     val isModuleActive = remember { ModuleStatus.isModuleActive() }
 
+    LaunchedEffect(Unit) {
+        Utils.makeWorldReadable(context)
+    }
+
     var showDeviceSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
 
@@ -59,11 +64,13 @@ fun SettingScreen(onSettingChanged: () -> Unit) {
 
     fun saveBoolean(key: String, value: Boolean) {
         pref.edit().putBoolean(key, value).commit()
+        Utils.makeWorldReadable(context)
         notifyChangedIfActive()
     }
 
     fun saveString(key: String, value: String) {
         pref.edit().putString(key, value).commit()
+        Utils.makeWorldReadable(context)
         notifyChangedIfActive()
     }
 
